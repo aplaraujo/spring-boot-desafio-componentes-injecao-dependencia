@@ -1,13 +1,49 @@
 package com.example.spring_boot_desafio_componentes_injecao_dependencia;
 
+import java.util.Locale;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+
+import com.example.spring_boot_desafio_componentes_injecao_dependencia.entities.Order;
+import com.example.spring_boot_desafio_componentes_injecao_dependencia.services.ShippingService;
+
 
 @SpringBootApplication
-public class SpringBootDesafioComponentesInjecaoDependenciaApplication {
+@ComponentScan({"com.example.spring_boot_desafio_componentes_injecao_dependencia"})
+public class SpringBootDesafioComponentesInjecaoDependenciaApplication implements CommandLineRunner{
+
+	@Autowired
+	ShippingService shippingService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootDesafioComponentesInjecaoDependenciaApplication.class, args);
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+
+		Locale.setDefault(Locale.US);
+
+		Order order1 = new Order(1034, 150.00, 20.0);
+		Order order2 = new Order(2282, 800.00, 10.0);
+		Order order3 = new Order(1309, 95.90, 0.0);
+
+		System.out.println();
+		System.out.println("Pedido codigo " + order1.getCode());
+		System.out.printf("Valor total: R$ %.2f", shippingService.shipment(order1));
+
+		System.out.println();
+		System.out.println("Pedido codigo " + order2.getCode());
+		System.out.printf("Valor total: R$ %.2f", shippingService.shipment(order2));
+
+		System.out.println();
+		System.out.println("Pedido codigo " + order3.getCode());
+		System.out.printf("Valor total: R$ %.2f", shippingService.shipment(order3));
+	
 	}
 
 }
